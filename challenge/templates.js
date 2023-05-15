@@ -20,13 +20,19 @@ function home(posts) {
   `;
   return layout(title, content);
 }
+const sanitization = (inputString) => {
+  inputString = inputString.replace(/</g, '&lt;');
+  inputString = inputString.replace(/>/g, '&gt;');
+  return inputString;
+};
 
 function postItem(post) {
   const date = new Date(post.created);
   const prettyDate = date.toLocaleString("en-GB");
+  const cleanMessage = sanitization(post.message);
   return `
     <li>
-      <p>${post.message}</p>
+      <p>${cleanMessage}</p>
       <p>—${post.nickname} | ${prettyDate}</p>
     </li>
   `;
@@ -46,5 +52,7 @@ function layout(title, content) {
     </html>
   `;
 }
+
+
 
 module.exports = { home };
